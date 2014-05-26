@@ -145,9 +145,11 @@
                                         GridCellSize="100,100" SelectionChanged="ImagesList_SelectionChanged"/>
             </phone:PivotItem>
             <phone:PivotItem Header="Teams List">
-                <StackPanel Margin="20" Name="TeamsStackPanel">
-                  
-                </StackPanel>
+                <ScrollViewer >
+                    <StackPanel Margin="20" Name="TeamsStackPanel">
+
+                    </StackPanel>
+                </ScrollViewer>
             </phone:PivotItem>
             <phone:PivotItem Header="Card Names">
 

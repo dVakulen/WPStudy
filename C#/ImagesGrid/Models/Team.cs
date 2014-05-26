@@ -17,6 +17,14 @@ namespace ImagesGrid.Models
 
         public event PropertyChangingEventHandler PropertyChanging;
 
+        public Team()
+        {
+            if (userCardInTeams == null)
+            {
+                userCardInTeams = new EntitySet<CardInTeam>();
+            }
+        }
+        private int number;
         private Guid id;
 
         [Column(IsPrimaryKey = true, IsDbGenerated = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
@@ -35,6 +43,20 @@ namespace ImagesGrid.Models
             }
         }
 
+        [Column(CanBeNull = false)]
+        public int Number
+        {
+            get
+            {
+                return this.number;
+            }
+
+            set
+            {
+                this.number = value;
+                this.NotifyPropertyChanged("Name");
+            }
+        }
 
         private EntitySet<CardInTeam> userCardInTeams;
 

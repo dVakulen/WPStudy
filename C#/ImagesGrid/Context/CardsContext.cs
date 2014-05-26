@@ -55,6 +55,25 @@ namespace ImagesGrid.Context
             if (!this.DatabaseExists())
             {
                 this.CreateDatabase();
+                var a = new CardInTeam
+                {
+                    Attack = 1,
+                    Attribute = Attribut.Black,
+                    Name = "Asxda",
+                    LargeImageName = "A",
+                    Image =
+                        new ImageCard
+                        {
+                            Id = Guid.NewGuid(),
+                            TimeStamp = DateTime.Now,
+                            Title = "asd",
+                            ImageSource = "Images/e1.png"
+                        }
+                };
+                this.CardInTeam.InsertOnSubmit(a);
+                var qqz = new Team { Number = 42, UserCardInTeams = new EntitySet<CardInTeam> { a } };
+                a.Team = qqz;
+                this.Team.InsertOnSubmit(qqz);
                 var z = this.UserCards;
                 z.InsertOnSubmit(
                     new Card

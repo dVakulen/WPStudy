@@ -38,7 +38,10 @@ namespace PhotoHubSample
         #endregion
 
         #region Constructors and Destructors
-
+        void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show((sender as Button).Content.ToString());
+        }
         public MainPage()
         {
             this.InitializeComponent();
@@ -50,7 +53,14 @@ namespace PhotoHubSample
             this.bWorker.WorkerSupportsCancellation = false;
             this.bWorker.DoWork += this.bw_DoWork;
             this.bWorker.RunWorkerCompleted += this.bw_RunWorkerCompleted;
-            this.TeamsStackPanel.Children.Add(new Button { Content = "+"});
+            for (int i = 9; i < 30; i++)
+            {
+                var AddButton = new Button();
+                AddButton.Click += AddButton_Click;
+                AddButton.Content = i;
+                this.TeamsStackPanel.Children.Add(AddButton);
+            }
+          
         }
 
         #endregion
