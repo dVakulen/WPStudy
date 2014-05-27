@@ -100,10 +100,14 @@ namespace ImagesGrid.Context
                             ImageSource = "Images/e3.png"
                         }
                 };
+              
                 this.CardInTeam.InsertOnSubmit(a);
                 var qqz = new Team { Number = 1, UserCardInTeams = new EntitySet<CardInTeam> { a, b, b1 } };
-                var qqz1 = new Team { Number = 2, UserCardInTeams = new EntitySet<CardInTeam> { } };
                 a.Team = qqz;
+                b.Team = qqz;
+                b1.Team = qqz;
+                var qqz1 = new Team { Number = 2, UserCardInTeams = new EntitySet<CardInTeam> { } };
+              
 
                 this.Team.InsertOnSubmit(qqz1);
                 this.Team.InsertOnSubmit(qqz);
@@ -127,7 +131,10 @@ namespace ImagesGrid.Context
                         });
 
                 var d = DataService.GetImagesNamesList(true);
-
+                if (d.Count == 0)
+                {
+                 return;   
+                }
                 for (int i = 0; i < 15; i++)
                 {
                     z.InsertOnSubmit(

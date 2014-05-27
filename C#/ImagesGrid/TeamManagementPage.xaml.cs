@@ -25,6 +25,7 @@ namespace ImagesGrid
     {
         private ImagesViewModel dataContext;
         private Repository<Team> teamRepository = new Repository<Team>();
+       private Repository<CardInTeam> teamCardsRepository = new Repository<CardInTeam>();
         private Dictionary<Attribut, int> attributeStatisticsDictionary = new Dictionary<Attribut, int>
                                                                               {
                                                                                  { Attribut.Earth, 0 },
@@ -95,7 +96,6 @@ namespace ImagesGrid
         }
         private void EmptyTeamImage_Tap(object sender, GestureEventArgs e)
         {
-            MessageBox.Show("EmptyTeam");
             dataContext.IsInSelectingCardToTeam = true;
 
             this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
@@ -107,9 +107,34 @@ namespace ImagesGrid
             this.dataContext.CurrentTeam.UserCardInTeams.Clear();
             teamRepository.SubmitChanges();
             NavigationService.Navigate(new Uri("/TeamManagementPage.xaml?Refresh=true", UriKind.Relative));
-           // NavigationService.Navigate(new Uri(string.Format(NavigationService.Source +
-                                 //   "?Refresh=true&random={0}", Guid.NewGuid())));
+         
            
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+              var bv =  teamRepository.GetAll().Where(v=>v.Id == dataContext.CurrentTeam.Id).FirstOrDefault();
+              foreach (var userCardInTeam in dataContext.CurrentTeam.UserCardInTeams)
+                {
+                    if (userCardInTeam.IsNew)
+                    {
+                        userCardInTeam.IsNew = false;
+                        userCardInTeam.teamId = bv.Id;
+                        bv.UserCardInTeams.Add(userCardInTeam);
+                    }
+                }
+           
+               // teamRepository.Delete(bv);
+              //  teamRepository.SubmitChanges();
+             // teamRepository.Insert(bv);
+              // teamRepository.SubmitChanges();
+           
+            
+        //    teamCardsRepository.Insert(dataContext.CurrentTeam.UserCardInTeams.Last());
+         //   teamCardsRepository.SubmitChanges();
+          //  teamRepository.SubmitChanges();
+            MessageBox.Show("Changes saved");
+            this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
     }
 }

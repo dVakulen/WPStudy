@@ -17,10 +17,11 @@ namespace ImagesGrid.Models
 
         [Column(CanBeNull = false)]
         public Guid imageId;
-
+        [Column]
+        public bool IsNew;
         private int attack;
         [Column(CanBeNull = true)]
-        private Guid? teamId;
+        public Guid? teamId;
         private Attribut attribute;
 
         private Guid id;
@@ -29,7 +30,7 @@ namespace ImagesGrid.Models
 
         private string largeImageName;
 
-        private EntityRef<Team> team;
+       private EntityRef<Team> team;
         private string name;
 
         #endregion
@@ -68,7 +69,7 @@ namespace ImagesGrid.Models
                 this.NotifyPropertyChanged("Attack");
             }
         }
-        [Association(Name = "FK_Team_UserCardInTeam", Storage = "team", ThisKey = "teamId", OtherKey = "Id", IsForeignKey = true)]
+     [Association(Name = "FK_Team_UserCardInTeam", Storage = "team", ThisKey = "teamId", OtherKey = "Id", IsForeignKey = true)]
         public Team Team
         {
             get { return this.team.Entity; }

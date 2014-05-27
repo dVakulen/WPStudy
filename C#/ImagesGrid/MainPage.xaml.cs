@@ -91,8 +91,7 @@ namespace PhotoHubSample
             this.bWorker.WorkerSupportsCancellation = false;
             this.bWorker.DoWork += this.bw_DoWork;
             this.bWorker.RunWorkerCompleted += this.bw_RunWorkerCompleted;
-            var z = teamRepository.GetAll();
-            foreach (var team in z)
+            foreach (var team in dataContext.Teams)
             {
                 AddTeamButton(team);
             }
@@ -156,12 +155,13 @@ namespace PhotoHubSample
                     dataContext.CurrentTeam.UserCardInTeams.Add(new CardInTeam
                                                                     {
                                                                         Attack = card.Attack,
-                                                                        Team =  dataContext.CurrentTeam,
                                                                         Image = card.Image,
                                                                         Id=  Guid.NewGuid(),
                                                                         Attribute = card.Attribute,
                                                                         Name = card.Name,
-                                                                        LargeImageName =  card.LargeImageName
+                                                                        LargeImageName =  card.LargeImageName,
+                                                                        IsNew =  true,
+                                                                       
                                                                     });
                     dataContext.IsInSelectingCardToTeam = false;
                     this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));

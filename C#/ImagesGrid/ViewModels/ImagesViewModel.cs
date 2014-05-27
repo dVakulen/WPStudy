@@ -13,14 +13,15 @@ using ImagesGrid.Services;
 #endregion
 namespace ImagesGrid.ViewModels
 {
-
+    using ImagesGrid.Repository;
 
     public class ImagesViewModel : INotifyPropertyChanged
     {
         #region Fields
 
         public int CardsCount;
-
+        private Repository<Team> teamRepository = new Repository<Team>();
+     
        // public List<string> Names = DataService.GetImagesNamesList(false);
 
         public List<Card> cards;
@@ -38,6 +39,11 @@ namespace ImagesGrid.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        public ImagesViewModel()
+        {
+            this.Teams = teamRepository.GetAll().ToList();
+        }
 
         #region Public Properties
 
@@ -74,6 +80,8 @@ namespace ImagesGrid.ViewModels
         }
 
         public bool IsInSelectingCardToTeam;
+
+        public List<Team> Teams { get; set; }
         public Team CurrentTeam { get; set; }
         public List<KeyedList<string, Card>> GroupedCardsList
         {

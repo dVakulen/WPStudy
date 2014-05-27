@@ -12,6 +12,7 @@ using ImagesGrid.Interfaces;
 #endregion
 namespace ImagesGrid.Repository
 {
+    using ImagesGrid.Models;
 
     public static class DatacontextWrapper
     {
@@ -43,7 +44,8 @@ namespace ImagesGrid.Repository
 
         public void Delete(TEntity entity)
         {
-            this.dataTable.DeleteOnSubmit(entity);
+        
+                this.dataTable.DeleteOnSubmit(entity);
         }
 
         public void DeleteAll(IEnumerable<TEntity> entities)
