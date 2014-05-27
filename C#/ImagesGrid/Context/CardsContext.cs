@@ -57,7 +57,7 @@ namespace ImagesGrid.Context
                 this.CreateDatabase();
                 var a = new CardInTeam
                 {
-                    Attack = 1,
+                    Attack = 2,
                     Attribute = Attribut.Light,
                     Name = "Asxda",
                     LargeImageName = "A",
@@ -70,8 +70,38 @@ namespace ImagesGrid.Context
                             ImageSource = "Images/e1.png"
                         }
                 };
+                var b = new CardInTeam
+                {
+                    Attack = 7,
+                    Attribute = Attribut.Light,
+                    Name = "zxc",
+                    LargeImageName = "A",
+                    Image =
+                        new ImageCard
+                        {
+                            Id = Guid.NewGuid(),
+                            TimeStamp = DateTime.Now,
+                            Title = "dsaa",
+                            ImageSource = "Images/e2.png"
+                        }
+                };
+                var b1 = new CardInTeam
+                {
+                    Attack = 14,
+                    Attribute = Attribut.Earth,
+                    Name = "asd",
+                    LargeImageName = "A",
+                    Image =
+                        new ImageCard
+                        {
+                            Id = Guid.NewGuid(),
+                            TimeStamp = DateTime.Now,
+                            Title = "fsd",
+                            ImageSource = "Images/e3.png"
+                        }
+                };
                 this.CardInTeam.InsertOnSubmit(a);
-                var qqz = new Team { Number = 42, UserCardInTeams = new EntitySet<CardInTeam> { a } };
+                var qqz = new Team { Number = 42, UserCardInTeams = new EntitySet<CardInTeam> { a, b, b1 } };
                 a.Team = qqz;
                 this.Team.InsertOnSubmit(qqz);
                 var z = this.UserCards;

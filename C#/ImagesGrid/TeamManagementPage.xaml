@@ -28,11 +28,22 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1"  Margin="12,0,12,0">
-           
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="401*"/>
+            </Grid.ColumnDefinitions>
 
-            <StackPanel Name="TeamsPanel"  Margin="10,10,10,488" Orientation="Horizontal">
-               </StackPanel>
+
+            <StackPanel Name="TeamsPanel"  Margin="10,10,10,488" Orientation="Horizontal" Grid.ColumnSpan="3">
+            </StackPanel>
+            <ListBox Name="AttributeStatistics"  VerticalAlignment="Top" Grid.Column="1" Height="286" Margin="10,240.031,225.512,0" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                <ListBox.RenderTransform>
+                    <CompositeTransform SkewY="0.305" TranslateY="0.517"/>
+                </ListBox.RenderTransform>
+            </ListBox>
         </Grid>
+
     </Grid>
 
 </phone:PhoneApplicationPage>
