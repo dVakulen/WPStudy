@@ -15,6 +15,7 @@ namespace ImagesGrid
     using System.Windows.Media.Imaging;
 
     using ImagesGrid.Models;
+    using ImagesGrid.Repository;
     using ImagesGrid.Services;
     using ImagesGrid.ViewModels;
 
@@ -23,7 +24,7 @@ namespace ImagesGrid
     public partial class TeamManagementPage : PhoneApplicationPage
     {
         private ImagesViewModel dataContext;
-
+        private Repository<Team> teamRepository = new Repository<Team>();
         private Dictionary<Attribut, int> attributeStatisticsDictionary = new Dictionary<Attribut, int>
                                                                               {
                                                                                  { Attribut.Earth, 0 },
@@ -90,15 +91,21 @@ namespace ImagesGrid
         private void TeamImage_Tap(object sender, GestureEventArgs e)
         {
             MessageBox.Show("Team");
+
         }
         private void EmptyTeamImage_Tap(object sender, GestureEventArgs e)
         {
             MessageBox.Show("EmptyTeam");
+            dataContext.IsInSelectingCardToTeam = true;
+
+            this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+
         }
 
         private void ResetBtn_Click(object sender, RoutedEventArgs e)
         {
             this.dataContext.CurrentTeam.UserCardInTeams.Clear();
+            teamRepository.SubmitChanges();
             NavigationService.Navigate(new Uri("/TeamManagementPage.xaml?Refresh=true", UriKind.Relative));
            // NavigationService.Navigate(new Uri(string.Format(NavigationService.Source +
                                  //   "?Refresh=true&random={0}", Guid.NewGuid())));

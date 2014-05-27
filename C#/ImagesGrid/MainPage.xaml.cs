@@ -41,7 +41,7 @@ namespace PhotoHubSample
         #region Constructors and Destructors
         void TeamButton_Click(object sender, RoutedEventArgs e)
         {
-           // MessageBox.Show((sender as Button).Content.ToString());
+            // MessageBox.Show((sender as Button).Content.ToString());
             if (sender is Button)
             {
                 this.dataContext.CurrentTeam = ((sender as Button).DataContext as Team);
@@ -50,7 +50,7 @@ namespace PhotoHubSample
         }
         void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var lastTeam=  teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
+            var lastTeam = teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
             var team = new Team
                            {
                                Id = Guid.NewGuid(),
@@ -58,7 +58,7 @@ namespace PhotoHubSample
                                UserCardInTeams = new EntitySet<CardInTeam>()
                            };
             teamRepository.Insert(team);
-            this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count-1);
+            this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count - 1);
             AddTeamButton((team));
             AddAddButton();
             //  MessageBox.Show(lastTeam.Number.ToString());
@@ -91,12 +91,14 @@ namespace PhotoHubSample
             this.bWorker.WorkerSupportsCancellation = false;
             this.bWorker.DoWork += this.bw_DoWork;
             this.bWorker.RunWorkerCompleted += this.bw_RunWorkerCompleted;
-           var z =  teamRepository.GetAll();
+            var z = teamRepository.GetAll();
             foreach (var team in z)
             {
                 AddTeamButton(team);
             }
             AddAddButton();
+            this.pivot.IsLocked = dataContext.IsInSelectingCardToTeam;
+
         }
 
         #endregion
@@ -130,19 +132,43 @@ namespace PhotoHubSample
 
         private void ImagesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             if (sender is LongListSelector)
             {
                 var sendr = sender as LongListSelector;
+
                 if (sendr.SelectedItem == null)
                 {
                     return;
                 }
+                if (!dataContext.IsInSelectingCardToTeam)
+                {
+                    this.dataContext.CurrentCard = sendr.SelectedItem as Card;
+                   
+                    this.dataContext.IsCardNew = false;
+                    sendr.SelectedItem = null;
+                    this.NavigationService.Navigate(new Uri("/CardPage.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    var card = sendr.SelectedItem as Card;
+                    if (card == null) return;
+                    dataContext.CurrentTeam.UserCardInTeams.Add(new CardInTeam
+                                                                    {
+                                                                        Attack = card.Attack,
+                                                                        Team =  dataContext.CurrentTeam,
+                                                                        Image = card.Image,
+                                                                        Id=  Guid.NewGuid(),
+                                                                        Attribute = card.Attribute,
+                                                                        Name = card.Name,
+                                                                        LargeImageName =  card.LargeImageName
+                                                                    });
+                    dataContext.IsInSelectingCardToTeam = false;
+                    this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
+                }
 
-                this.dataContext.CurrentCard = sendr.SelectedItem as Card;
-                this.dataContext.IsCardNew = false;
-                sendr.SelectedItem = null;
-                this.NavigationService.Navigate(new Uri("/CardPage.xaml", UriKind.Relative));
             }
+
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -251,5 +277,9 @@ namespace PhotoHubSample
         }
 
         #endregion
+
+        private void Image_Tap(object sender, GestureEventArgs e)
+        {
+        }
     }
 }
