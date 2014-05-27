@@ -58,8 +58,10 @@ namespace PhotoHubSample
                                UserCardInTeams = new EntitySet<CardInTeam>()
                            };
             teamRepository.Insert(team);
+            dataContext.Teams.Add(team);
             this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count - 1);
             AddTeamButton((team));
+            
             AddAddButton();
             //  MessageBox.Show(lastTeam.Number.ToString());
         }

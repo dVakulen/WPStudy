@@ -113,14 +113,14 @@ namespace ImagesGrid
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-              var bv =  teamRepository.GetAll().Where(v=>v.Id == dataContext.CurrentTeam.Id).FirstOrDefault();
+           //   var bv =  teamRepository.GetAll().Where(v=>v.Id == dataContext.CurrentTeam.Id).FirstOrDefault();
               foreach (var userCardInTeam in dataContext.CurrentTeam.UserCardInTeams)
                 {
                     if (userCardInTeam.IsNew)
                     {
                         userCardInTeam.IsNew = false;
-                        userCardInTeam.teamId = bv.Id;
-                        bv.UserCardInTeams.Add(userCardInTeam);
+                      //  userCardInTeam.teamId = bv.Id;
+                   //     bv.UserCardInTeams.Add(userCardInTeam);
                     }
                 }
            
