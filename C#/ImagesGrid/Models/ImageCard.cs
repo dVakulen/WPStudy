@@ -1,14 +1,13 @@
 ﻿#region Using Directives
 
 using System;
-using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
 #endregion
 
 namespace ImagesGrid.Models
 {
-
+   
     [Table]
     public class ImageCard
     {

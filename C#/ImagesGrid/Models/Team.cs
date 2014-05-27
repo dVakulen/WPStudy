@@ -1,31 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+#region Using Directives
 
+using System;
+using System.ComponentModel;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+
+#endregion
 namespace ImagesGrid.Models
 {
-    using System.ComponentModel;
-    using System.Data.Linq;
-    using System.Data.Linq.Mapping;
 
     [Table]
     public class Team : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        #region Fields
+
+        private Guid id;
+
+        private int number;
+
+        private EntitySet<CardInTeam> userCardInTeams;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public Team()
+        {
+            if (this.userCardInTeams == null)
+            {
+                this.userCardInTeams = new EntitySet<CardInTeam>();
+            }
+        }
+
+        #endregion
+
+        #region Public Events
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        public Team()
-        {
-            if (userCardInTeams == null)
-            {
-                userCardInTeams = new EntitySet<CardInTeam>();
-            }
-        }
-        private int number;
-        private Guid id;
+        #endregion
+
+        #region Public Properties
 
         [Column(IsPrimaryKey = true, IsDbGenerated = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public Guid Id
@@ -58,12 +76,14 @@ namespace ImagesGrid.Models
             }
         }
 
-        private EntitySet<CardInTeam> userCardInTeams;
-
         [Association(Name = "FK_UserCardInTeam_Team", Storage = "userCardInTeams", ThisKey = "Id", OtherKey = "teamId")]
         public EntitySet<CardInTeam> UserCardInTeams
         {
-            get { return this.userCardInTeams; }
+            get
+            {
+                return this.userCardInTeams;
+            }
+
             set
             {
                 this.userCardInTeams.Assign(value);
@@ -71,11 +91,9 @@ namespace ImagesGrid.Models
             }
         }
 
+        #endregion
 
-
-
-
-
+        #region Methods
 
         private void NotifyPropertyChanged(string propertyName)
         {
@@ -92,6 +110,7 @@ namespace ImagesGrid.Models
                 this.PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
-    }
 
+        #endregion
+    }
 }
