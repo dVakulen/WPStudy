@@ -48,7 +48,6 @@ namespace ImagesGrid
             InitializeComponent();
             this.dataContext = App.ViewModel;
             this.DataContext = App.ViewModel;
-            //  var b = DataService.GetImages().Result;
             Enum.GetValues(typeof(Attribut)).Cast<Attribut>();
             int i = 0;
             foreach (var card in this.dataContext.CurrentTeam.UserCardInTeams)
@@ -63,7 +62,7 @@ namespace ImagesGrid
                 teamImage.Tap += TeamImage_Tap;
                 teamImage.Name = i.ToString();
                 this.TeamsPanel.Children.Add(teamImage);
-                this.attributeStatisticsDictionary[card.Attribute]+= card.Attack;
+                this.attributeStatisticsDictionary[card.Attribute] += card.Attack;
             }
             for (; i < 5; i++)
             {
@@ -81,7 +80,7 @@ namespace ImagesGrid
             }
             foreach (var attr in attributeStatisticsDictionary)
             {
-               ListBoxItem attrItem= new ListBoxItem();
+                ListBoxItem attrItem = new ListBoxItem();
                 attrItem.Content = string.Format("{0} : {1}", attr.Key, attr.Value);
                 attrItem.Foreground = attributesColorsDictionary[attr.Key];
                 attrItem.FontSize = 38;
@@ -95,6 +94,15 @@ namespace ImagesGrid
         private void EmptyTeamImage_Tap(object sender, GestureEventArgs e)
         {
             MessageBox.Show("EmptyTeam");
+        }
+
+        private void ResetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.dataContext.CurrentTeam.UserCardInTeams.Clear();
+            NavigationService.Navigate(new Uri("/TeamManagementPage.xaml?Refresh=true", UriKind.Relative));
+           // NavigationService.Navigate(new Uri(string.Format(NavigationService.Source +
+                                 //   "?Refresh=true&random={0}", Guid.NewGuid())));
+           
         }
     }
 }

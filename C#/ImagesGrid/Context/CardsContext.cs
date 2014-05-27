@@ -101,8 +101,11 @@ namespace ImagesGrid.Context
                         }
                 };
                 this.CardInTeam.InsertOnSubmit(a);
-                var qqz = new Team { Number = 42, UserCardInTeams = new EntitySet<CardInTeam> { a, b, b1 } };
+                var qqz = new Team { Number = 1, UserCardInTeams = new EntitySet<CardInTeam> { a, b, b1 } };
+                var qqz1 = new Team { Number = 2, UserCardInTeams = new EntitySet<CardInTeam> { } };
                 a.Team = qqz;
+
+                this.Team.InsertOnSubmit(qqz1);
                 this.Team.InsertOnSubmit(qqz);
                 var z = this.UserCards;
                 z.InsertOnSubmit(

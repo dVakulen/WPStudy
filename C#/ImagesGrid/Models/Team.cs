@@ -64,7 +64,11 @@ namespace ImagesGrid.Models
         public EntitySet<CardInTeam> UserCardInTeams
         {
             get { return this.userCardInTeams; }
-            set { this.userCardInTeams.Assign(value); }
+            set
+            {
+                this.userCardInTeams.Assign(value);
+                this.NotifyPropertyChanged("UserCardInTeams");
+            }
         }
 
 

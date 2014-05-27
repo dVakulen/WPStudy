@@ -24,7 +24,8 @@ using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 #endregion
 namespace PhotoHubSample
 {
-
+    using System.Data.Linq;
+    using System.Linq;
 
     public partial class MainPage : PhoneApplicationPage
     {
@@ -38,7 +39,7 @@ namespace PhotoHubSample
         #endregion
 
         #region Constructors and Destructors
-        void AddButton_Click(object sender, RoutedEventArgs e)
+        void TeamButton_Click(object sender, RoutedEventArgs e)
         {
            // MessageBox.Show((sender as Button).Content.ToString());
             if (sender is Button)
@@ -46,6 +47,38 @@ namespace PhotoHubSample
                 this.dataContext.CurrentTeam = ((sender as Button).DataContext as Team);
                 this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
             }
+        }
+        void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var lastTeam=  teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
+            var team = new Team
+                           {
+                               Id = Guid.NewGuid(),
+                               Number = ++lastTeam.Number,
+                               UserCardInTeams = new EntitySet<CardInTeam>()
+                           };
+            teamRepository.Insert(team);
+            this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count-1);
+            AddTeamButton((team));
+            AddAddButton();
+            //  MessageBox.Show(lastTeam.Number.ToString());
+        }
+
+        private void AddTeamButton(Team team)
+        {
+            var TeamBtn = new Button();
+            TeamBtn.Click += TeamButton_Click;
+            TeamBtn.Content = team.Number;
+            TeamBtn.DataContext = team;
+            this.TeamsStackPanel.Children.Add(TeamBtn);
+        }
+
+        private void AddAddButton()
+        {
+            var AddButton = new Button();
+            AddButton.Click += AddButton_Click;
+            AddButton.Content = "+";
+            this.TeamsStackPanel.Children.Add(AddButton);
         }
         public MainPage()
         {
@@ -61,21 +94,9 @@ namespace PhotoHubSample
            var z =  teamRepository.GetAll();
             foreach (var team in z)
             {
-                var AddButton = new Button();
-                AddButton.Click += AddButton_Click;
-                AddButton.Content = team.Number;
-                AddButton.DataContext = team;
-                this.TeamsStackPanel.Children.Add(AddButton);
+                AddTeamButton(team);
             }
-            for (int i = 9; i < 30; i++)
-            {
-                var AddButton = new Button();
-                AddButton.Click += AddButton_Click;
-                AddButton.Content = i;
-                this.TeamsStackPanel.Children.Add(AddButton);
-               
-            }
-          
+            AddAddButton();
         }
 
         #endregion
