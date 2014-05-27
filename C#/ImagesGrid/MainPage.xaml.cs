@@ -41,7 +41,6 @@ namespace PhotoHubSample
         #region Constructors and Destructors
         void TeamButton_Click(object sender, RoutedEventArgs e)
         {
-            // MessageBox.Show((sender as Button).Content.ToString());
             if (sender is Button)
             {
                 this.dataContext.CurrentTeam = ((sender as Button).DataContext as Team);
@@ -63,7 +62,6 @@ namespace PhotoHubSample
             AddTeamButton((team));
             
             AddAddButton();
-            //  MessageBox.Show(lastTeam.Number.ToString());
         }
 
         private void AddTeamButton(Team team)
