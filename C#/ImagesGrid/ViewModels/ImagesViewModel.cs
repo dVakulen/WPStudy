@@ -21,7 +21,7 @@ namespace ImagesGrid.ViewModels
 
         public int CardsCount;
 
-        public List<string> Names = DataService.GetImagesNamesList(false);
+       // public List<string> Names = DataService.GetImagesNamesList(false);
 
         public List<Card> cards;
 
@@ -73,6 +73,7 @@ namespace ImagesGrid.ViewModels
             }
         }
 
+        public Team CurrentTeam { get; set; }
         public List<KeyedList<string, Card>> GroupedCardsList
         {
             get

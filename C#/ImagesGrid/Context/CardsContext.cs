@@ -58,7 +58,7 @@ namespace ImagesGrid.Context
                 var a = new CardInTeam
                 {
                     Attack = 1,
-                    Attribute = Attribut.Black,
+                    Attribute = Attribut.Light,
                     Name = "Asxda",
                     LargeImageName = "A",
                     Image =
@@ -80,7 +80,7 @@ namespace ImagesGrid.Context
                         {
                             Id = Guid.NewGuid(),
                             Attack = 5,
-                            Attribute = Attribut.Black,
+                            Attribute = Attribut.Light,
                             LargeImageName = "A",
                             Name = "Asd",
                             Image =
@@ -101,7 +101,7 @@ namespace ImagesGrid.Context
                         new Card
                             {
                                 Attack = i,
-                                Attribute = Attribut.Green,
+                                Attribute = Attribut.Fire,
                                 LargeImageName = "A",
                                 Name = "Asd" + i,
                                 Image =

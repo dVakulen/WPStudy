@@ -122,6 +122,9 @@
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="StaticMembers\Consts.cs" />
+    <Compile Include="TeamManagementPage.xaml.cs">
+      <DependentUpon>TeamManagementPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ImagesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeamManagementPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

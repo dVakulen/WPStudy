@@ -32,7 +32,7 @@ namespace PhotoHubSample
 
         private BackgroundWorker bWorker = new BackgroundWorker();
 
-
+        private Repository<Team> teamRepository = new Repository<Team>();
         private Stopwatch watch;
 
         #endregion
@@ -40,7 +40,12 @@ namespace PhotoHubSample
         #region Constructors and Destructors
         void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show((sender as Button).Content.ToString());
+           // MessageBox.Show((sender as Button).Content.ToString());
+            if (sender is Button)
+            {
+                this.dataContext.CurrentTeam = ((sender as Button).DataContext as Team);
+                this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
+            }
         }
         public MainPage()
         {
@@ -53,12 +58,22 @@ namespace PhotoHubSample
             this.bWorker.WorkerSupportsCancellation = false;
             this.bWorker.DoWork += this.bw_DoWork;
             this.bWorker.RunWorkerCompleted += this.bw_RunWorkerCompleted;
+           var z =  teamRepository.GetAll();
+            foreach (var team in z)
+            {
+                var AddButton = new Button();
+                AddButton.Click += AddButton_Click;
+                AddButton.Content = team.Number;
+                AddButton.DataContext = team;
+                this.TeamsStackPanel.Children.Add(AddButton);
+            }
             for (int i = 9; i < 30; i++)
             {
                 var AddButton = new Button();
                 AddButton.Click += AddButton_Click;
                 AddButton.Content = i;
                 this.TeamsStackPanel.Children.Add(AddButton);
+               
             }
           
         }

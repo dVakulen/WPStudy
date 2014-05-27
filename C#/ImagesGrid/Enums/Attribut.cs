@@ -4,9 +4,10 @@ namespace ImagesGrid.Models
 {
     public enum Attribut
     {
-        Green,
-        Red,
-        Black,
-        White
+        Fire,
+        Water,
+        Light,
+        Dark,
+        Earth
     }
 }
