@@ -1,0 +1,16 @@
+﻿<Page
+    x:Class="GameAndCircles.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GameAndCircles"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Button x:Name="Circles" Content="Circles" HorizontalAlignment="Left" Margin="62,145,0,0" VerticalAlignment="Top" Width="254" />
+        <Button Content="Button" HorizontalAlignment="Left" Margin="62,211,0,0" VerticalAlignment="Top" Width="254"/>
+
+    </Grid>
+</Page>
