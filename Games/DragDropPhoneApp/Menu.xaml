@@ -29,7 +29,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-            <Button Content="Circles" HorizontalAlignment="Left" Margin="78,146,0,0" VerticalAlignment="Top" Width="236" />
+            <Button Content="Circles" HorizontalAlignment="Left" Margin="78,146,0,0" VerticalAlignment="Top" Width="236" Click="Button_Click" />
             <Button x:Name="Game" Content="Game" HorizontalAlignment="Left" Margin="60,308,0,0" VerticalAlignment="Top" Width="254" Click="Game_Click"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="180,81,0,0" VerticalAlignment="Top"/>
 

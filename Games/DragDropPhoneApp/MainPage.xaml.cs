@@ -53,12 +53,13 @@ namespace DragDropPhoneApp
             {
                 Top = Canvas.GetTop(elem);
                 double delta = 1000 / Top;
-                if (Top > MainCanvas.ActualHeight)
+                if (Top > MainCanvas.ActualHeight-75)
                 {
                     elemsToRemove.Add(elem);
                     continue;
                 }
-                
+                if(delta == Double.PositiveInfinity)
+                    continue;
                 Top += delta;
                 Canvas.SetTop(elem, Top);
             }
@@ -74,9 +75,6 @@ namespace DragDropPhoneApp
             FrameworkElement Elem = sender as FrameworkElement;
             elementsToDrop.Add(Elem);
             
-
-            ElemVelX = args.FinalVelocities.LinearVelocity.X / SPEED_FACTOR;
-            ElemVelY = args.FinalVelocities.LinearVelocity.Y / SPEED_FACTOR;
 
            timer.Start();
         }
@@ -155,6 +153,15 @@ namespace DragDropPhoneApp
 
         private void MainCanvas_KeyDown(object sender, KeyEventArgs e)
         {
+        }
+        private static bool FirstTimeLoad = true;
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (FirstTimeLoad)
+            {
+                FirstTimeLoad = false;
+                this.NavigationService.Navigate(new Uri("/Menu.xaml", UriKind.Relative));
+            }
         }
 
     }
