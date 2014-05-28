@@ -2,9 +2,9 @@
 
 using System;
 using System.ComponentModel;
+using System.Data.Linq;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,9 +24,10 @@ using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 #endregion
 namespace PhotoHubSample
 {
-    using System.Data.Linq;
-    using System.Linq;
+    using System.Windows.Media.Imaging;
 
+    using ImagesGrid.Helpers;
+   
     public partial class MainPage : PhoneApplicationPage
     {
         #region Fields
@@ -34,53 +35,13 @@ namespace PhotoHubSample
         private BackgroundWorker bWorker = new BackgroundWorker();
 
         private Repository<Team> teamRepository = new Repository<Team>();
+
         private Stopwatch watch;
 
         #endregion
 
         #region Constructors and Destructors
-        void TeamButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button)
-            {
-                this.dataContext.CurrentTeam = ((sender as Button).DataContext as Team);
-                this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
-            }
-        }
-        void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            var lastTeam = teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
-            var team = new Team
-                           {
-                               Id = Guid.NewGuid(),
-                               Number = ++lastTeam.Number,
-                               UserCardInTeams = new EntitySet<CardInTeam>()
-                           };
-            teamRepository.Insert(team);
-            teamRepository.SubmitChanges();
-            dataContext.Teams.Add(team);
-            this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count - 1);
-            AddTeamButton((team));
 
-            AddAddButton();
-        }
-
-        private void AddTeamButton(Team team)
-        {
-            var TeamBtn = new Button();
-            TeamBtn.Click += TeamButton_Click;
-            TeamBtn.Content = team.Number;
-            TeamBtn.DataContext = team;
-            this.TeamsStackPanel.Children.Add(TeamBtn);
-        }
-
-        private void AddAddButton()
-        {
-            var AddButton = new Button();
-            AddButton.Click += AddButton_Click;
-            AddButton.Content = "+";
-            this.TeamsStackPanel.Children.Add(AddButton);
-        }
         public MainPage()
         {
             this.InitializeComponent();
@@ -92,13 +53,13 @@ namespace PhotoHubSample
             this.bWorker.WorkerSupportsCancellation = false;
             this.bWorker.DoWork += this.bw_DoWork;
             this.bWorker.RunWorkerCompleted += this.bw_RunWorkerCompleted;
-            foreach (var team in dataContext.Teams)
+            foreach (var team in this.dataContext.Teams)
             {
-                AddTeamButton(team);
+                this.AddTeamButton(team);
             }
-            AddAddButton();
-            this.pivot.IsLocked = dataContext.IsInSelectingCardToTeam;
 
+            this.AddAddButton();
+            this.pivot.IsLocked = this.dataContext.IsInSelectingCardToTeam;
         }
 
         #endregion
@@ -113,8 +74,33 @@ namespace PhotoHubSample
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
             this.RunWorker();
+        }
+
+        private void AddAddButton()
+        {
+            var AddButton = new Button();
+            AddButton.Click += this.AddButton_Click;
+            AddButton.Content = "+";
+            this.TeamsStackPanel.Children.Add(AddButton);
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var lastTeam = this.teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
+            var team = new Team
+                           {
+                               Id = Guid.NewGuid(), 
+                               Number = ++lastTeam.Number, 
+                               UserCardInTeams = new EntitySet<CardInTeam>()
+                           };
+            this.teamRepository.Insert(team);
+            this.teamRepository.SubmitChanges();
+            this.dataContext.Teams.Add(team);
+            this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count - 1);
+            this.AddTeamButton(team);
+
+            this.AddAddButton();
         }
 
         private void AddNew_KeyDown(object sender, KeyEventArgs e)
@@ -130,9 +116,21 @@ namespace PhotoHubSample
             this.NavigationService.Navigate(new Uri("/CardPage.xaml", UriKind.Relative));
         }
 
+        private void AddTeamButton(Team team)
+        {
+            var TeamBtn = new Button();
+            TeamBtn.Click += this.TeamButton_Click;
+            TeamBtn.Content = team.Number;
+            TeamBtn.DataContext = team;
+            this.TeamsStackPanel.Children.Add(TeamBtn);
+        }
+
+        private void Image_Tap(object sender, GestureEventArgs e)
+        {
+        }
+
         private void ImagesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (sender is LongListSelector)
             {
                 var sendr = sender as LongListSelector;
@@ -141,7 +139,8 @@ namespace PhotoHubSample
                 {
                     return;
                 }
-                if (!dataContext.IsInSelectingCardToTeam)
+
+                if (!this.dataContext.IsInSelectingCardToTeam)
                 {
                     this.dataContext.CurrentCard = sendr.SelectedItem as Card;
 
@@ -152,23 +151,26 @@ namespace PhotoHubSample
                 else
                 {
                     var card = sendr.SelectedItem as Card;
-                    if (card == null) return;
-                    dataContext.CurrentTeam.UserCardInTeams.Add(new CardInTeam
-                                                                    {
-                                                                        Attack = card.Attack,
-                                                                        Image = card.Image,
-                                                                        Id = Guid.NewGuid(),
-                                                                        Attribute = card.Attribute,
-                                                                        Name = card.Name,
-                                                                        IsNew = true,
+                    if (card == null)
+                    {
+                        return;
+                    }
 
-                                                                    });
-                    dataContext.IsInSelectingCardToTeam = false;
+                    this.dataContext.CurrentTeam.UserCardInTeams.Add(
+                        new CardInTeam
+                            {
+                                Attack = card.Attack, 
+                                Image = card.Image, 
+                                Id = Guid.NewGuid(), 
+                                Attribute = card.Attribute, 
+                                Name = card.Name, 
+                                IsNew = true, 
+                                PlaceInTeam = dataContext.SelectedCardPlace
+                            });
+                    this.dataContext.IsInSelectingCardToTeam = false;
                     this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
                 }
-
             }
-
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -216,9 +218,17 @@ namespace PhotoHubSample
         {
         }
 
+        private void TeamButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button)
+            {
+                this.dataContext.CurrentTeam = (sender as Button).DataContext as Team;
+                this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));
+            }
+        }
+
         private void TestOne_LayoutUpdated(object sender, EventArgs e)
         {
-
             ((App)Application.Current).OutputTimestamp("TestOne_LayoutUpdated");
         }
 
@@ -232,28 +242,40 @@ namespace PhotoHubSample
         {
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
-                {
-                    this.dataContext.IsLoading = true;
-                    this.watch = Stopwatch.StartNew();
-                    this.dataContext.Cards = DataService.GetCards().Result;
-                    this.dataContext.photos = DataService.GetImages().Result;
-                });
+                    {
+                        this.dataContext.IsLoading = true;
+                        this.watch = Stopwatch.StartNew();
+                        this.dataContext.Cards = DataService.GetCards().Result;
+                        this.dataContext.photos = DataService.GetImages().Result;
+                    });
         }
-
+      
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
-                {
-                    this.watch.Stop();
-                    this.dataContext.IsLoading = false;
-                    this.StatisticsTextBox.Text = string.Format(
-                        "Loaded {0} Iimages in {1} ms",
-                        this.dataContext.CardsCount,
-                        this.watch.Elapsed);
-                });
-        }
+                    {
+                        this.watch.Stop();
+                        this.dataContext.IsLoading = false;
+                        this.StatisticsTextBox.Text = string.Format(
+                            "Loaded {0} Iimages in {1} ms", 
+                            this.dataContext.CardsCount, 
+                            this.watch.Elapsed);
 
+                    // ImagesList.
+                     /*   foreach (var img in ImagesList.ItemsSource)
+                        {
+                            var b = img as KeyedList<string,Card>;
+                            foreach (var card in b)
+                            {
+                                if (DataService.isCardInTeam(card))
+                                {
+                              //     card.
+                                }
+                            }
+                        }*/
+                    });
+        }
 
         private void setLoadingIndicator()
         {
@@ -277,9 +299,5 @@ namespace PhotoHubSample
         }
 
         #endregion
-
-        private void Image_Tap(object sender, GestureEventArgs e)
-        {
-        }
     }
 }

@@ -81,6 +81,7 @@ namespace ImagesGrid.ViewModels
 
         public bool IsInSelectingCardToTeam;
 
+        public int SelectedCardPlace;
         public List<Team> Teams { get; set; }
         public Team CurrentTeam { get; set; }
         public List<KeyedList<string, Card>> GroupedCardsList

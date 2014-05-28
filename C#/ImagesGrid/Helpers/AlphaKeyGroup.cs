@@ -57,7 +57,7 @@ namespace ImagesGrid.Helpers
 
             foreach (T item in items)
             {
-                int index = 0;
+                int index;
                 {
                     index = slg.GetGroupIndex(keySelector(item));
                 }

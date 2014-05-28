@@ -1,40 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using Directives
+
+using System;
+using System.ComponentModel;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+
+#endregion
 
 namespace ImagesGrid.Models
 {
-    using System.ComponentModel;
-    using System.Data.Linq;
-    using System.Data.Linq.Mapping;
-
+  
     [Table]
     public class CardInTeam : INotifyPropertyChanged, INotifyPropertyChanging
     {
         #region Fields
 
-        [Column(CanBeNull = false)]
-        public Guid imageId;
         [Column]
         public bool IsNew;
-        private int attack;
+
+        [Column]
+        public int PlaceInTeam;
+        [Column(CanBeNull = false)]
+        public Guid imageId;
+
         [Column(CanBeNull = true)]
         public Guid? teamId;
+
+        private int attack;
+
         private Attribut attribute;
 
         private Guid id;
 
         private EntityRef<ImageCard> image;
 
-
-       private EntityRef<Team> team;
         private string name;
 
-        #endregion
+        private EntityRef<Team> team;
 
-     
+        #endregion
 
         #region Public Events
 
@@ -61,20 +65,6 @@ namespace ImagesGrid.Models
                 this.NotifyPropertyChanged("Attack");
             }
         }
-     [Association(Name = "FK_Team_UserCardInTeam", Storage = "team", ThisKey = "teamId", OtherKey = "Id", IsForeignKey = true)]
-        public Team Team
-        {
-            get { return this.team.Entity; }
-            set
-            {
-                this.NotifyPropertyChanging("Team");
-                this.team.Entity = value;
-                if (value != null)
-                    this.teamId = value.Id;
-                this.NotifyPropertyChanged("Team");
-            }
-        }
-
 
         [Column(CanBeNull = false)]
         public Attribut Attribute
@@ -118,7 +108,6 @@ namespace ImagesGrid.Models
 
             set
             {
-
                 this.NotifyPropertyChanging("Image");
 
                 this.image.Entity = value;
@@ -128,11 +117,8 @@ namespace ImagesGrid.Models
                 }
 
                 this.NotifyPropertyChanged("Image");
-
             }
         }
-
-   
 
         [Column(CanBeNull = false)]
         public string Name
@@ -147,6 +133,28 @@ namespace ImagesGrid.Models
                 this.NotifyPropertyChanging("Name");
                 this.name = value;
                 this.NotifyPropertyChanged("Name");
+            }
+        }
+
+        [Association(Name = "FK_Team_UserCardInTeam", Storage = "team", ThisKey = "teamId", OtherKey = "Id", 
+            IsForeignKey = true)]
+        public Team Team
+        {
+            get
+            {
+                return this.team.Entity;
+            }
+
+            set
+            {
+                this.NotifyPropertyChanging("Team");
+                this.team.Entity = value;
+                if (value != null)
+                {
+                    this.teamId = value.Id;
+                }
+
+                this.NotifyPropertyChanged("Team");
             }
         }
 

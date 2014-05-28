@@ -57,6 +57,7 @@ namespace ImagesGrid.Context
                 this.CreateDatabase();
                 var a = new CardInTeam
                 {
+                    PlaceInTeam = 2,
                     Attack = 2,
                     Attribute = Attribut.Light,
                     Name = "Asxda",
@@ -70,7 +71,7 @@ namespace ImagesGrid.Context
                         }
                 };
                 var b = new CardInTeam
-                {
+                {PlaceInTeam = 1,
                     Attack = 7,
                     Attribute = Attribut.Light,
                     Name = "zxc",
@@ -85,6 +86,7 @@ namespace ImagesGrid.Context
                 };
                 var b1 = new CardInTeam
                 {
+                    PlaceInTeam = 3,
                     Attack = 14,
                     Attribute = Attribut.Earth,
                     Name = "asd",
