@@ -39,6 +39,7 @@ namespace ImagesGrid
             this.InitializeComponent();
             this.DataContext = App.ViewModel;
             this.dataContext = App.ViewModel;
+            this.dataContext.IsInSelectingCardToTeam = false;
             if (this.dataContext.IsCardNew)
             {
                 this.CardAttr.ItemsSource = Enum.GetValues(typeof(Attribut)).Cast<Attribut>();

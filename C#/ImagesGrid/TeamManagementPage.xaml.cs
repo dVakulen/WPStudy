@@ -150,26 +150,26 @@ namespace ImagesGrid
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // var bv =  teamRepository.GetAll().Where(v=>v.Id == dataContext.CurrentTeam.Id).FirstOrDefault();
+            var team =  teamRepository.GetAll().Where(v=>v.Id == dataContext.CurrentTeam.Id).FirstOrDefault();
             foreach (var userCardInTeam in this.dataContext.CurrentTeam.UserCardInTeams)
             {
                 if (userCardInTeam.IsNew)
                 {
                     userCardInTeam.IsNew = false;
-
-                    // userCardInTeam.teamId = bv.Id;
-                    // bv.UserCardInTeams.Add(userCardInTeam);
+                    var image = new ImageCard
+                    {
+                        ImageSource = userCardInTeam.Image.ImageSource,
+                        TimeStamp = DateTime.Now,
+                        Title = userCardInTeam.Image.Title
+                    };
+                    userCardInTeam.Image = image;
+                    userCardInTeam.teamId = team.Id;
+                    team.UserCardInTeams.Add(userCardInTeam);
+                    teamCardsRepository.Insert(userCardInTeam);
                 }
             }
 
-            // teamRepository.Delete(bv);
-            // teamRepository.SubmitChanges();
-            // teamRepository.Insert(bv);
-            // teamRepository.SubmitChanges();
-
-            // teamCardsRepository.Insert(dataContext.CurrentTeam.UserCardInTeams.Last());
-            // teamCardsRepository.SubmitChanges();
-            // teamRepository.SubmitChanges();
+           teamRepository.SubmitChanges();
             MessageBox.Show("Changes saved");
             this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }

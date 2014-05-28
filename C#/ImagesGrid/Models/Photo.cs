@@ -10,7 +10,7 @@ namespace ImagesGrid.Models
     public class Photo : ImageCard
     {
         #region Public Properties
-
+        
         public BitmapImage Image { get; set; }
 
         #endregion

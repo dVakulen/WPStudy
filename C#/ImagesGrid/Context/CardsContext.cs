@@ -60,7 +60,6 @@ namespace ImagesGrid.Context
                     Attack = 2,
                     Attribute = Attribut.Light,
                     Name = "Asxda",
-                    LargeImageName = "A",
                     Image =
                         new ImageCard
                         {
@@ -75,7 +74,6 @@ namespace ImagesGrid.Context
                     Attack = 7,
                     Attribute = Attribut.Light,
                     Name = "zxc",
-                    LargeImageName = "A",
                     Image =
                         new ImageCard
                         {
@@ -90,7 +88,6 @@ namespace ImagesGrid.Context
                     Attack = 14,
                     Attribute = Attribut.Earth,
                     Name = "asd",
-                    LargeImageName = "A",
                     Image =
                         new ImageCard
                         {

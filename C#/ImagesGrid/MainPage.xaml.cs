@@ -57,10 +57,11 @@ namespace PhotoHubSample
                                UserCardInTeams = new EntitySet<CardInTeam>()
                            };
             teamRepository.Insert(team);
+            teamRepository.SubmitChanges();
             dataContext.Teams.Add(team);
             this.TeamsStackPanel.Children.RemoveAt(this.TeamsStackPanel.Children.Count - 1);
             AddTeamButton((team));
-            
+
             AddAddButton();
         }
 
@@ -143,7 +144,7 @@ namespace PhotoHubSample
                 if (!dataContext.IsInSelectingCardToTeam)
                 {
                     this.dataContext.CurrentCard = sendr.SelectedItem as Card;
-                   
+
                     this.dataContext.IsCardNew = false;
                     sendr.SelectedItem = null;
                     this.NavigationService.Navigate(new Uri("/CardPage.xaml", UriKind.Relative));
@@ -156,12 +157,11 @@ namespace PhotoHubSample
                                                                     {
                                                                         Attack = card.Attack,
                                                                         Image = card.Image,
-                                                                        Id=  Guid.NewGuid(),
+                                                                        Id = Guid.NewGuid(),
                                                                         Attribute = card.Attribute,
                                                                         Name = card.Name,
-                                                                        LargeImageName =  card.LargeImageName,
-                                                                        IsNew =  true,
-                                                                       
+                                                                        IsNew = true,
+
                                                                     });
                     dataContext.IsInSelectingCardToTeam = false;
                     this.NavigationService.Navigate(new Uri("/TeamManagementPage.xaml", UriKind.Relative));

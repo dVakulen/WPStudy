@@ -28,21 +28,13 @@ namespace ImagesGrid.Models
 
         private EntityRef<ImageCard> image;
 
-        private string largeImageName;
 
        private EntityRef<Team> team;
         private string name;
 
         #endregion
 
-        #region Constructors and Destructors
-
-        public CardInTeam()
-        {
-            this.largeImageName = "A";
-        }
-
-        #endregion
+     
 
         #region Public Events
 
@@ -140,21 +132,7 @@ namespace ImagesGrid.Models
             }
         }
 
-        [Column(CanBeNull = false)]
-        public string LargeImageName
-        {
-            get
-            {
-                return this.largeImageName;
-            }
-
-            set
-            {
-                this.NotifyPropertyChanging("LargeImageName");
-                this.largeImageName = value;
-                this.NotifyPropertyChanged("LargeImageName");
-            }
-        }
+   
 
         [Column(CanBeNull = false)]
         public string Name
