@@ -10,16 +10,11 @@ using Microsoft.Phone.Shell;
 
 namespace DragDropPhoneApp
 {
-    public partial class Menu : PhoneApplicationPage
+    public partial class Game : PhoneApplicationPage
     {
-        public Menu()
+        public Game()
         {
             InitializeComponent();
-        }
-
-        private void Game_Click(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri("/Game.xaml", UriKind.Relative));
         }
     }
 }
