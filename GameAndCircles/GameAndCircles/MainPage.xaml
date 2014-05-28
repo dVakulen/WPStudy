@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button x:Name="Circles" Content="Circles" HorizontalAlignment="Left" Margin="62,145,0,0" VerticalAlignment="Top" Width="254" />
+        <Button x:Name="Circles" Content="Circles" HorizontalAlignment="Left" Margin="62,145,0,0" VerticalAlignment="Top" Width="254" Click="Circles_Click" />
         <Button Content="Button" HorizontalAlignment="Left" Margin="62,211,0,0" VerticalAlignment="Top" Width="254"/>
 
     </Grid>

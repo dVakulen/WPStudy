@@ -4,11 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GameAndCircles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="Page_Tapped">
 
-    <Grid>
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="App" Margin="0,0,-0.667,0" />
+            <TextBlock x:Name="PageTitle" Text="Circles" Margin="9,-7,-2.667,0" />
+        </StackPanel>
+        <Canvas x:Name="ContentPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBox x:Name="Info" Canvas.Left="10" Margin="0" TextWrapping="Wrap" Canvas.Top="431" Width="363" IsReadOnly="True"/>
+
+        </Canvas>
+
+        <!--<Canvas x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Tapped="ContentPanel_Tapped" ManipulationStarted="ContentPanel_ManipulationStarted" GotFocus="ContentPanel_GotFocus" Canvas.ZIndex="2">
+            <TextBox x:Name="Info" Canvas.Left="10" Margin="0" TextWrapping="Wrap" Canvas.Top="431" Width="363" IsReadOnly="True"/>
+            <Grid x:Name="Bubble" Width="150" Height="150" Canvas.Left="153" Canvas.Top="228.5">
+                <Ellipse StrokeThickness="3"  Fill="{StaticResource PhoneAccentBrush}" />
+                <Ellipse  />
+            </Grid>
+            <Ellipse Width="25" Height="25" Canvas.Left="215.5" Canvas.Top="291">
+                <Ellipse.Fill>
+                    <SolidColorBrush x:Name="TargetFill" Color="#FF319A31"/>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Canvas>-->
     </Grid>
 </Page>

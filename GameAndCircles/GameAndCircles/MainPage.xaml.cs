@@ -47,7 +47,7 @@ namespace GameAndCircles
 
         private void Circles_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(SecondPage));
+            Frame.Navigate(typeof(Circles));
         }
     }
 }
