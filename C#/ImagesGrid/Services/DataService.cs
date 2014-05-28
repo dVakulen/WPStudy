@@ -51,10 +51,11 @@
 
         public static bool isCardInTeam(Card card)
         {
-            return true;
+            var z = teamCardsRepository.GetAll().ToList();
+            var b = z;
             return
                 teamCardsRepository.Where(
-                    v => v.Name.Equals(card.Name) || v.Attribute == card.Attribute).Any();//v.Attack == card.Attack && v.Attribute == card.Attribute &&
+                    v => v.Name.Equals(card.Name) && v.Attribute == card.Attribute && v.Attack == card.Attack).Any();
         }
     
 
@@ -111,8 +112,8 @@
             var cards = cardRepository.GetAll().ToList();
             foreach (var card in cards)
             {
-              
-                if (isCardInTeam(card) && false)
+
+                if (false && isCardInTeam(card) && false)
                 {
                     DateTime start = new DateTime(2010, 1, 1);
                     BitmapImage img = new BitmapImage();
@@ -126,7 +127,7 @@
                 {
 
                     card.Image = GetImage(card.Image.ImageSource);
-                    if (isCardInTeam(card))
+                 //   if (isCardInTeam(card))
                     {
                     //    DrawTeamMark((Photo)card.Image);
                     }

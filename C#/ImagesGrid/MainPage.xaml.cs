@@ -24,10 +24,25 @@ using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 #endregion
 namespace PhotoHubSample
 {
+    using System.Globalization;
+    using System.Threading;
     using System.Windows.Media.Imaging;
 
     using ImagesGrid.Helpers;
-   
+    public class BooleanToVisibilityConverter : IValueConverter
+    {
+        public Object Convert(Object value, Type targetType, Object parameter, System.Globalization.CultureInfo culture)
+        {
+            var booleanValue = (Boolean)value;
+            return booleanValue ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public Object ConvertBack(Object value, Type targetType, Object parameter, System.Globalization.CultureInfo culture)
+        {
+            var visibilityValue = (Visibility)value;
+            return visibilityValue == Visibility.Visible;
+        }
+    }
     public partial class MainPage : PhoneApplicationPage
     {
         #region Fields
@@ -299,5 +314,13 @@ namespace PhotoHubSample
         }
 
         #endregion
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            var img = sender as Image;
+            var card = img.DataContext as Card;
+            img.Visibility = DataService.isCardInTeam(card) ? Visibility.Visible : Visibility.Collapsed;
+          
+        }
     }
 }

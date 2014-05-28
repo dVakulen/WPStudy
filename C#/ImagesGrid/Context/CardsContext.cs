@@ -58,23 +58,23 @@ namespace ImagesGrid.Context
                 var a = new CardInTeam
                 {
                     PlaceInTeam = 2,
-                    Attack = 2,
-                    Attribute = Attribut.Light,
-                    Name = "Asxda",
+                    Attack = 5,
+                    Attribute = Attribut.Fire,
+                    Name = "Asd",
                     Image =
                         new ImageCard
                         {
                             Id = Guid.NewGuid(),
                             TimeStamp = DateTime.Now,
-                            Title = "asd",
+                            Title = "Asd",
                             ImageSource = "Images/e1.png"
                         }
                 };
                 var b = new CardInTeam
                 {PlaceInTeam = 1,
                     Attack = 7,
-                    Attribute = Attribut.Light,
-                    Name = "zxc",
+                    Attribute = Attribut.Fire,
+                 Name = "Asd2",
                     Image =
                         new ImageCard
                         {
@@ -88,8 +88,8 @@ namespace ImagesGrid.Context
                 {
                     PlaceInTeam = 3,
                     Attack = 14,
-                    Attribute = Attribut.Earth,
-                    Name = "asd",
+                    Attribute = Attribut.Fire,
+                    Name = "Asd1",
                     Image =
                         new ImageCard
                         {
@@ -116,7 +116,7 @@ namespace ImagesGrid.Context
                         {
                             Id = Guid.NewGuid(),
                             Attack = 5,
-                            Attribute = Attribut.Light,
+                            Attribute = Attribut.Fire,
                             LargeImageName = "A",
                             Name = "Asd",
                             Image =

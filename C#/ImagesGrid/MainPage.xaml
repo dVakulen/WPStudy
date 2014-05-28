@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:c="clr-namespace:PhotoHubSample"
     xmlns:viewModels="clr-namespace:ImagesGrid.ViewModels"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"    
@@ -57,10 +58,12 @@
 
         <DataTemplate x:Key="ItemTemplate">
             <StackPanel Height="100" Width="100" Margin="6,6">
-                <Image Width="100" Height="100" Stretch="UniformToFill"   Source="{Binding Image.Image}" Tap="Image_Tap" />
-                <Image Width="50" Height="50" Stretch="UniformToFill"   Source="Assets/Tiles/FlipCycleTileSmall.png" Tap="Image_Tap" Canvas.ZIndex="1" RenderTransformOrigin="0.5,0.5" >
-                 
+
+                <Image Width="100" Height="100" Stretch="UniformToFill"   Source="{Binding Image.Image}" Tap="Image_Tap"  />
+                <Image DataContext="{Binding BindsDirectlyToSource=True}" Width="40" Height="40" Stretch="UniformToFill"   Source="Assets/Tiles/FlipCycleTileSmall.png" Margin="40,-160,0,0" Tap="Image_Tap" Canvas.ZIndex="1" RenderTransformOrigin="0.5,0.5" Loaded="Image_Loaded" >
+                    <!--, Converter={StaticResource BooleanToVisibilityConverter}-->
                 </Image>
+               
             </StackPanel>
         </DataTemplate>
 

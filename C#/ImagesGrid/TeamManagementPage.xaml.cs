@@ -34,7 +34,7 @@ namespace ImagesGrid
 
         #region Fields
 
-        private  Dictionary<Attribut, int> attributeStatisticsDictionary = new Dictionary<Attribut, int>
+        private Dictionary<Attribut, int> attributeStatisticsDictionary = new Dictionary<Attribut, int>
                                                                               {
                                                                                   {
                                                                                       Attribut
@@ -97,7 +97,7 @@ namespace ImagesGrid
             {
                 if (i < cardInTeam.Count)
                 {
-                   
+
                     for (int h = 0; h < cardInTeam.Count; h++)
                     {
                         if (cardInTeam[h].PlaceInTeam == j)
@@ -114,26 +114,25 @@ namespace ImagesGrid
                                                 };
                             teamImage.Tap += this.TeamImage_Tap;
                             this.TeamsPanel.Children.Add(teamImage);
-                            this.attributeStatisticsDictionary[card.Attribute] += card.Attack; 
+                            this.attributeStatisticsDictionary[card.Attribute] += card.Attack;
                             i++;
                             found = true;
-
                         }
                     }
                 }
-                if(!found)
+                if (!found)
                 {
                     BitmapImage img = new BitmapImage();
                     img.SetSource(
                         Application.GetResourceStream(new Uri(@"Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative))
                             .Stream);
-                    var emptyTeamImage = new Image { Source = img, Name = emptySlot, MaxHeight = 80, MaxWidth = 80, Tag =j };
+                    var emptyTeamImage = new Image { Source = img, Name = emptySlot, MaxHeight = 80, MaxWidth = 80, Tag = j };
                     emptyTeamImage.Tap += this.EmptyTeamImage_Tap;
                     this.TeamsPanel.Children.Add(emptyTeamImage);
                 }
                 found = false;
             }
-          
+
 
             foreach (var attr in this.attributeStatisticsDictionary)
             {
@@ -184,7 +183,7 @@ namespace ImagesGrid
 
             }
 
-            this.teamRepository.SubmitChanges();
+            this.teamCardsRepository.SubmitChanges();
             MessageBox.Show("Changes saved");
             this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }

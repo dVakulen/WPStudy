@@ -9,6 +9,7 @@ using System.Data.Linq.Mapping;
 #endregion
 namespace ImagesGrid.Models
 {
+    using System.Windows;
 
     [Table]
     public class Card : INotifyPropertyChanged, INotifyPropertyChanging
@@ -139,6 +140,8 @@ namespace ImagesGrid.Models
             }
         }
 
+        public bool IsInTeam = false;
+        
         [Column(CanBeNull = false)]
         public string Name
         {
