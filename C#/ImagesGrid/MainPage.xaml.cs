@@ -90,6 +90,7 @@ namespace PhotoHubSample
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.RunWorker();
+            
         }
 
         private void AddAddButton()
@@ -105,8 +106,8 @@ namespace PhotoHubSample
             var lastTeam = this.teamRepository.GetAll().OrderByDescending(c => c.Number).FirstOrDefault();
             var team = new Team
                            {
-                               Id = Guid.NewGuid(), 
-                               Number = ++lastTeam.Number, 
+                               Id = Guid.NewGuid(),
+                               Number = ++lastTeam.Number,
                                UserCardInTeams = new EntitySet<CardInTeam>()
                            };
             this.teamRepository.Insert(team);
@@ -174,12 +175,12 @@ namespace PhotoHubSample
                     this.dataContext.CurrentTeam.UserCardInTeams.Add(
                         new CardInTeam
                             {
-                                Attack = card.Attack, 
-                                Image = card.Image, 
-                                Id = Guid.NewGuid(), 
-                                Attribute = card.Attribute, 
-                                Name = card.Name, 
-                                IsNew = true, 
+                                Attack = card.Attack,
+                                Image = card.Image,
+                                Id = Guid.NewGuid(),
+                                Attribute = card.Attribute,
+                                Name = card.Name,
+                                IsNew = true,
                                 PlaceInTeam = dataContext.SelectedCardPlace
                             });
                     this.dataContext.IsInSelectingCardToTeam = false;
@@ -195,9 +196,11 @@ namespace PhotoHubSample
             this.dataContext = viewModel;
             if (this.ImagesList.ItemsSource != null && this.ImagesList.ItemsSource.Count > 0)
             {
-                this.ImagesList.ScrollTo(this.ImagesList.ItemsSource[this.ImagesList.ItemsSource.Count - 1]);
+               this.ImagesList.ScrollTo(this.ImagesList.ItemsSource[this.ImagesList.ItemsSource.Count - 1]);
             }
         }
+
+       
 
         private void OrderByChange(object sender, EventArgs e)
         {
@@ -251,45 +254,35 @@ namespace PhotoHubSample
         {
             this.setLoadingIndicator();
             ((App)Application.Current).OutputTimestamp("TestOne_Loaded");
+          
         }
 
         private async void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
-                    {
-                        this.dataContext.IsLoading = true;
-                        this.watch = Stopwatch.StartNew();
-                        this.dataContext.Cards = DataService.GetCards().Result;
-                        this.dataContext.photos = DataService.GetImages().Result;
-                    });
+                {
+                    this.dataContext.IsLoading = true;
+                    this.watch = Stopwatch.StartNew();
+                    this.dataContext.Cards = DataService.GetCards().Result;
+                    this.dataContext.photos = DataService.GetImages().Result;
+                });
         }
-      
+
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
-                    {
-                        this.watch.Stop();
-                        this.dataContext.IsLoading = false;
-                        this.StatisticsTextBox.Text = string.Format(
-                            "Loaded {0} Iimages in {1} ms", 
-                            this.dataContext.CardsCount, 
-                            this.watch.Elapsed);
+                {
+                    this.watch.Stop();
+                    this.dataContext.IsLoading = false;
+                    this.StatisticsTextBox.Text = string.Format(
+                        "Loaded {0} Iimages in {1} ms",
+                        this.dataContext.CardsCount,
+                        this.watch.Elapsed);
+                   
 
-                    // ImagesList.
-                     /*   foreach (var img in ImagesList.ItemsSource)
-                        {
-                            var b = img as KeyedList<string,Card>;
-                            foreach (var card in b)
-                            {
-                                if (DataService.isCardInTeam(card))
-                                {
-                              //     card.
-                                }
-                            }
-                        }*/
-                    });
+                });
         }
 
         private void setLoadingIndicator()
@@ -320,7 +313,7 @@ namespace PhotoHubSample
             var img = sender as Image;
             var card = img.DataContext as Card;
             img.Visibility = DataService.isCardInTeam(card) ? Visibility.Visible : Visibility.Collapsed;
-          
+
         }
     }
 }
