@@ -12,9 +12,17 @@ namespace DragDropPhoneApp
 {
     public partial class Menu : PhoneApplicationPage
     {
+        
         public Menu()
         {
             InitializeComponent();
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+
         }
     }
 }
