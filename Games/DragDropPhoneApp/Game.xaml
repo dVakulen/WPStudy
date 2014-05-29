@@ -18,8 +18,8 @@
        
 
 
-        <Canvas Background="Transparent" x:Name="MainCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="5" >
-        </Canvas>
-      </Grid>
+        <Canvas Background="Transparent" x:Name="MainCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,-10,0" />
+        <TextBox x:Name="TimerTextBox" HorizontalAlignment="Left" Height="72" Margin="10,625,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="470" IsReadOnly="True"/>
+    </Grid>
 
 </phone:PhoneApplicationPage>

@@ -28,6 +28,12 @@
     <Grid x:Name="LayoutRoot">
 
         <Canvas Background="Transparent" x:Name="MainCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Tap="MainCanvas_Tap" KeyDown="MainCanvas_KeyDown">
+            <Ellipse Fill="#FFFF2E00" Height="47" Canvas.Left="10" Stroke="Black" Canvas.Top="25" Width="46"/>
+            <TextBox Text="{Binding BindsDirectlyToSource=True}" x:Name="RedNum" Height="72" Canvas.Left="56" TextWrapping="Wrap" Canvas.Top="10" Width="110" IsReadOnly="True"/>
+            <Ellipse Fill="#FF3AFF00" Height="47" Canvas.Left="157" Stroke="Black" Canvas.Top="25" Width="46"/>
+            <TextBox Text="{Binding BindsDirectlyToSource=True}" x:Name="GreenNum" Height="72" Canvas.Left="203" TextWrapping="Wrap" Canvas.Top="10" Width="110" IsReadOnly="True"/>
+            <Ellipse Fill="#FF000CFF" Height="47" Canvas.Left="314" Stroke="Black" Canvas.Top="25" Width="46"/>
+            <TextBox x:Name="BlueNum" Height="72" Canvas.Left="360" TextWrapping="Wrap" Canvas.Top="10" Width="110" Text="0" IsReadOnly="True"/>
         </Canvas>
 
     </Grid>

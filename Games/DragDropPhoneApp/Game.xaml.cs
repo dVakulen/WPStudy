@@ -10,6 +10,10 @@
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Shapes;
+    using System.Windows.Threading;
+
+    using DragDropPhoneApp.Context;
+    using DragDropPhoneApp.Model;
 
     using Microsoft.Phone.Controls;
 
@@ -25,10 +29,11 @@
 
         private Cell[][] cells = new Cell[4][];
 
+        private int secondsElapsed;
         private int[] usedNumbers = new int[16];
-
+        private DispatcherTimer timer;
         private int usedNumbersCount;
-
+        private GameContext dataContext = new GameContext();
         #endregion
 
         #region Constructors and Destructors
@@ -40,22 +45,22 @@
                 // this.MainCanvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 // this.MainCanvas.Arrange(new Rect(0, 0, this.MainCanvas.ActualHeight, this.MainCanvas.ActualWidth));
                 this.Initialize();
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        this.CreateButtonsWithNumbers(this.cells[j][i]);
-                    }
-                }
-
-                this.MainCanvas.Children.Remove(this.cells[3][3].Element);
-                this.cells[3][3].IsEmptySpace = true;
+                this.timer = new DispatcherTimer();
+                this.timer.Interval = TimeSpan.FromMilliseconds(1000);
+                this.timer.Tick += this.OnTimerTick;
+              this.timer.Start();
             }
         }
 
         #endregion
 
         #region Public Methods and Operators
+
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            secondsElapsed++;
+            TimerTextBox.Text = "Timer : " + secondsElapsed + " seconds";
+        }
 
         public void CreateButtonsWithNumbers(Cell cell)
         {
@@ -99,11 +104,11 @@
             return result;
         }
 
-    //    private int fake = 0;
+     private int fake = 0;
         private int GetNextRandomNumber()
         {
-          //  fake++;
-          //  return fake;
+           fake++;
+           return fake;
             Random r = new Random();
             int num = 0;
             bool unique;
@@ -148,6 +153,16 @@
                 k = 0;
                 j++;
             }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j1 = 0; j1 < 4; j1++)
+                {
+                    this.CreateButtonsWithNumbers(this.cells[j1][i]);
+                }
+            }
+
+            this.MainCanvas.Children.Remove(this.cells[3][3].Element);
+            this.cells[3][3].IsEmptySpace = true;
         }
 
         private bool CheckWin()
@@ -162,6 +177,7 @@
                     {
                         win = false;
                         return win;
+                       
                     }
                     sum++;
                 }
@@ -226,6 +242,11 @@
                     if (CheckWin())
                     {
                         MessageBox.Show("Win");
+                        Initialize();
+                        dataContext.RankTableEntries.InsertOnSubmit(new RankTableEntry
+                        {
+
+                        });
                     }
                     return;
                 }

@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -27,7 +28,7 @@
         #region Static Fields
 
         private static bool FirstTimeLoad = true;
-
+        static Random rnd = new Random();
         #endregion
 
         #region Fields
@@ -38,10 +39,21 @@
 
         private double ElemVelY;
 
+        private int blueNum;
+        private int greenNum;
+        private int redNum;
+
         private List<FrameworkElement> elementsToDrop = new List<FrameworkElement>();
 
         private DispatcherTimer timer;
 
+        private static List<SolidColorBrush> colors = new List<SolidColorBrush>
+                                                          {
+                                                              new SolidColorBrush(Colors.Red),
+                                                                new SolidColorBrush(Colors.Blue),
+                                                                 
+                                                               new SolidColorBrush(Colors.Green)
+                                                          };
         #endregion
 
         #region Constructors and Destructors
@@ -52,6 +64,8 @@
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(35);
             this.timer.Tick += this.OnTimerTick;
+            this.RedNum.DataContext = redNum;
+            this.GreenNum.DataContext = greenNum;
         }
 
         #endregion
@@ -60,7 +74,28 @@
 
         private void AddCircleOnCanvas(GestureEventArgs e)
         {
-            var el = new Ellipse { Width = 70, Height = 70, Fill = new SolidColorBrush(Colors.White) };
+            int rndColorNum = rnd.Next(colors.Count);
+            var color = colors.ElementAt(rndColorNum);
+            if (color.Color == Colors.Green)
+            {
+                greenNum++;
+                GreenNum.Text = greenNum.ToString();
+            }
+            else if (color.Color == Colors.Red)
+            {
+                redNum++;
+                RedNum.Text = redNum.ToString();
+            }
+            else if (color.Color == Colors.Blue)
+            {
+                blueNum++;
+                BlueNum.Text = blueNum.ToString();
+            }
+
+
+
+
+            var el = new Ellipse { Width = 70, Height = 70, Fill = color };
 
             el.ManipulationDelta += OnManipulationDelta;
             el.ManipulationCompleted += OnManipulationCompleted;
