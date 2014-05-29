@@ -27,5 +27,10 @@ namespace DragDropPhoneApp
 
             this.NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
+
+        private void Winners_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/WinnersRatingPage.xaml", UriKind.Relative));
+        }
     }
 }

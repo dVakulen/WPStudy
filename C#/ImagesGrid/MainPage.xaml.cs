@@ -294,7 +294,7 @@ namespace PhotoHubSample
             }
 
             progressIndicator = new ProgressIndicator();
-
+            
             SystemTray.SetProgressIndicator(this, progressIndicator);
 
             Binding binding = new Binding("IsLoading") { Source = this.DataContext };

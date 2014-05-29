@@ -12,6 +12,8 @@
     using System.Windows.Shapes;
     using System.Windows.Threading;
 
+    using Coding4Fun.Toolkit.Controls;
+
     using DragDropPhoneApp.Context;
     using DragDropPhoneApp.Model;
 
@@ -48,7 +50,7 @@
                 this.timer = new DispatcherTimer();
                 this.timer.Interval = TimeSpan.FromMilliseconds(1000);
                 this.timer.Tick += this.OnTimerTick;
-              this.timer.Start();
+                this.timer.Start();
             }
         }
 
@@ -66,9 +68,9 @@
         {
             Button btn = new Button
                              {
-                                 Width = this.cellWidth, 
-                                 DataContext = cell, 
-                                 Height = this.cellWidth, 
+                                 Width = this.cellWidth,
+                                 DataContext = cell,
+                                 Height = this.cellWidth,
                                  Content = this.GetNextRandomNumber()
                              };
             cell.Number = (int)btn.Content;
@@ -104,11 +106,11 @@
             return result;
         }
 
-     private int fake = 0;
+        private int fake = 0;
         private int GetNextRandomNumber()
         {
-           fake++;
-           return fake;
+            fake++;
+            return fake;
             Random r = new Random();
             int num = 0;
             bool unique;
@@ -144,7 +146,7 @@
                 {
                     this.cells[j][k] = new Cell
                                            {
-                                               PositionOnCanvas = new Point(i, w), 
+                                               PositionOnCanvas = new Point(i, w),
                                                PositionInMatrix = new Point(j, k)
                                            };
                     k++;
@@ -177,7 +179,7 @@
                     {
                         win = false;
                         return win;
-                       
+
                     }
                     sum++;
                 }
@@ -206,6 +208,25 @@
             return moved;
         }
 
+        private void congratulateWinner()
+        {
+            MessageBox.Show("Winner, elapsed time = " + secondsElapsed);
+            InputPrompt s = new InputPrompt();
+            s.Show();
+            s.Completed += (o, args) =>
+            {
+                dataContext.RankTableEntries.InsertOnSubmit(new RankTableEntry
+                {
+                    UserName = args.Result,
+                    TimePassed = secondsElapsed.ToString()
+                });
+                dataContext.SubmitChanges();
+                MessageBox.Show("Saved");
+            };
+
+            this.secondsElapsed = 0;
+            this.NavigationService.Navigate(new Uri("/Game.xaml?Refresh=true", UriKind.Relative));
+        }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
         }
@@ -241,12 +262,8 @@
                     btn.DataContext = CellToMove;
                     if (CheckWin())
                     {
-                        MessageBox.Show("Win");
-                        Initialize();
-                        dataContext.RankTableEntries.InsertOnSubmit(new RankTableEntry
-                        {
+                        congratulateWinner();
 
-                        });
                     }
                     return;
                 }
@@ -260,7 +277,8 @@
                     btn.DataContext = CellToMove;
                     if (CheckWin())
                     {
-                        MessageBox.Show("Win");
+
+                        congratulateWinner();
                     }
                     return;
                 }
@@ -271,10 +289,11 @@
                 var CellToMove = this.cells[cellPosX][bottom];
                 if (this.Move(CellToMove, cell))
                 {
-                    btn.DataContext = CellToMove; 
+                    btn.DataContext = CellToMove;
                     if (CheckWin())
                     {
-                        MessageBox.Show("Win");
+
+                        congratulateWinner();
                     }
                     return;
                 }
@@ -286,10 +305,11 @@
                 if (this.Move(CellToMove, cell))
                 {
                     btn.DataContext = CellToMove;
-                } 
+                }
                 if (CheckWin())
                 {
-                    MessageBox.Show("Win");
+
+                    congratulateWinner();
                 }
             }
 
