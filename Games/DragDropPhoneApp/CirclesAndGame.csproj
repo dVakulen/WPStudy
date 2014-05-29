@@ -142,8 +142,6 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="images\A.png" />
-    <Content Include="images\Apple.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,18 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     shell:SystemTray.IsVisible="True" Tap="PhoneApplicationPage_Tap" Loaded="PhoneApplicationPage_Loaded">
-
+    <phone:PhoneApplicationPage.Resources>
+        <Storyboard x:Name="fadeIn">
+            <DoubleAnimation Storyboard.TargetName="img"
+                         Storyboard.TargetProperty="Opacity" From="0.0"
+                         To="1.0" Duration="0:0:1" />
+        </Storyboard>
+        <Storyboard x:Name="fadeOut">
+            <DoubleAnimation Storyboard.TargetName="img"
+                         Storyboard.TargetProperty="Opacity" From=" 1.0"
+                         To="0.0" Duration="0:0:1" />
+        </Storyboard>
+    </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
 

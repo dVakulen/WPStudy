@@ -1,85 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
-using System.Windows.Media.Imaging;
-
-namespace DragDropPhoneApp
+﻿namespace DragDropPhoneApp
 {
+    #region Using Directives
+
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Shapes;
+    using System.Windows.Threading;
+
+    using Microsoft.Phone.Controls;
+
+    #endregion
+
     public partial class MainPage : PhoneApplicationPage
     {
+        #region Constants
 
-       
+        private const double SPEED_FACTOR = 60;
 
-        FrameworkElement ElemToMove = null;
-        double ElemVelX, ElemVelY;
+        #endregion
 
-        const double SPEED_FACTOR = 60;
+        #region Static Fields
 
-        DispatcherTimer timer;
+        private static bool FirstTimeLoad = true;
 
+        #endregion
 
+        #region Fields
+
+        private FrameworkElement ElemToMove = null;
+
+        private double ElemVelX;
+
+        private double ElemVelY;
 
         private List<FrameworkElement> elementsToDrop = new List<FrameworkElement>();
 
+        private DispatcherTimer timer;
+
+        #endregion
+
+        #region Constructors and Destructors
+
         public MainPage()
         {
-            InitializeComponent();
-
-            
-
-           // AddDragableItemOnCanvas();
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(35);
-            timer.Tick += this.OnTimerTick;
+            this.InitializeComponent();
+            this.timer = new DispatcherTimer();
+            this.timer.Interval = TimeSpan.FromMilliseconds(35);
+            this.timer.Tick += this.OnTimerTick;
         }
 
+        #endregion
 
-        private void OnTimerTick(object sender, EventArgs e)
+        #region Methods
+
+        private void AddCircleOnCanvas(GestureEventArgs e)
         {
-            double Top;
-            List<FrameworkElement> elemsToRemove = new List<FrameworkElement>();
-            foreach (var elem in elementsToDrop)
-            {
-                Top = Canvas.GetTop(elem);
-                double delta = 1000 / Top;
-                if (Top > MainCanvas.ActualHeight-75)
-                {
-                    elemsToRemove.Add(elem);
-                    continue;
-                }
-                if(delta == Double.PositiveInfinity)
-                    continue;
-                Top += delta;
-                Canvas.SetTop(elem, Top);
-            }
-            foreach (var elem in elemsToRemove)
-            {
-                elementsToDrop.Remove(elem);
-            }
-         
+            var el = new Ellipse { Width = 70, Height = 70, Fill = new SolidColorBrush(Colors.White) };
+
+            el.ManipulationDelta += OnManipulationDelta;
+            el.ManipulationCompleted += OnManipulationCompleted;
+            Canvas.SetLeft(el, e.GetPosition(this.MainCanvas).X - 35);
+            Canvas.SetTop(el, e.GetPosition(this.MainCanvas).Y - 35);
+            this.MainCanvas.Children.Add(el);
         }
 
-        void OnManipulationCompleted(object sender, ManipulationCompletedEventArgs args)
+        private void AddDragableItemOnCanvas()
+        {
+            Image appleImage = new Image { Source = new BitmapImage(new Uri("/images/Apple.png", UriKind.Relative)) };
+
+            Canvas.SetTop(appleImage, 0);
+            Canvas.SetLeft(appleImage, 240);
+
+            this.MainCanvas.Children.Add(appleImage);
+
+            appleImage.ManipulationDelta += OnManipulationDelta;
+            appleImage.ManipulationCompleted += OnManipulationCompleted;
+        }
+
+        private void MainCanvas_KeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        private void MainCanvas_Tap(object sender, GestureEventArgs e)
+        {
+            this.AddCircleOnCanvas(e);
+        }
+
+        private void OnManipulationCompleted(object sender, ManipulationCompletedEventArgs args)
         {
             FrameworkElement Elem = sender as FrameworkElement;
-            elementsToDrop.Add(Elem);
-            
+            this.elementsToDrop.Add(Elem);
 
-           timer.Start();
+            this.timer.Start();
         }
 
-        void OnManipulationDelta(object sender, ManipulationDeltaEventArgs args)
+        private void OnManipulationDelta(object sender, ManipulationDeltaEventArgs args)
         {
             FrameworkElement Elem = sender as FrameworkElement;
 
@@ -89,72 +109,57 @@ namespace DragDropPhoneApp
             Left += args.DeltaManipulation.Translation.X;
             Top += args.DeltaManipulation.Translation.Y;
 
-            
             if (Left < 0)
             {
                 Left = 0;
             }
-            else if (Left > (LayoutRoot.ActualWidth - Elem.ActualWidth))
+            else if (Left > (this.LayoutRoot.ActualWidth - Elem.ActualWidth))
             {
-                Left = LayoutRoot.ActualWidth - Elem.ActualWidth;
+                Left = this.LayoutRoot.ActualWidth - Elem.ActualWidth;
             }
 
             if (Top < 0)
             {
                 Top = 0;
             }
-            else if (Top > (LayoutRoot.ActualHeight - Elem.ActualHeight))
+            else if (Top > (this.LayoutRoot.ActualHeight - Elem.ActualHeight))
             {
-                Top = LayoutRoot.ActualHeight - Elem.ActualHeight;
+                Top = this.LayoutRoot.ActualHeight - Elem.ActualHeight;
             }
 
             Canvas.SetLeft(Elem, Left);
             Canvas.SetTop(Elem, Top);
         }
 
-
-      
-        void AddDragableItemOnCanvas()
+        private void OnTimerTick(object sender, EventArgs e)
         {
-            Image appleImage = new Image { Source = new BitmapImage(new Uri("/images/Apple.png", UriKind.Relative)) };
+            double Top;
+            List<FrameworkElement> elemsToRemove = new List<FrameworkElement>();
+            foreach (var elem in this.elementsToDrop)
+            {
+                Top = Canvas.GetTop(elem);
+                double delta = 1000 / Top;
+                if (Top > this.MainCanvas.ActualHeight - 75)
+                {
+                    elemsToRemove.Add(elem);
+                    continue;
+                }
 
-            Canvas.SetTop(appleImage, 0);
-            Canvas.SetLeft(appleImage, 240);
+                if (delta == double.PositiveInfinity)
+                {
+                    continue;
+                }
 
-            MainCanvas.Children.Add(appleImage);
+                Top += delta;
+                Canvas.SetTop(elem, Top);
+            }
 
-            appleImage.ManipulationDelta += OnManipulationDelta;
-            appleImage.ManipulationCompleted += OnManipulationCompleted;
-        }
-        void AddCircleOnCanvas(GestureEventArgs e)
-        {
-            var el = new Ellipse { Width = 70, Height = 70, Fill = new SolidColorBrush(Colors.White) };
-
-            el.ManipulationDelta += (OnManipulationDelta);
-            el.ManipulationCompleted += OnManipulationCompleted;
-            Canvas.SetLeft(el, e.GetPosition(MainCanvas).X - 35);
-            Canvas.SetTop(el, e.GetPosition(MainCanvas).Y - 35);
-            MainCanvas.Children.Add(el);
-            
-        }
-
-     
-
-        private void MainCanvas_Tap(object sender, GestureEventArgs e)
-        {
-            AddCircleOnCanvas(e);
-
+            foreach (var elem in elemsToRemove)
+            {
+                this.elementsToDrop.Remove(elem);
+            }
         }
 
-        private void PhoneApplicationPage_Tap(object sender, GestureEventArgs e)
-        {
-       
-        }
-
-        private void MainCanvas_KeyDown(object sender, KeyEventArgs e)
-        {
-        }
-        private static bool FirstTimeLoad = true;
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (FirstTimeLoad)
@@ -164,5 +169,10 @@ namespace DragDropPhoneApp
             }
         }
 
+        private void PhoneApplicationPage_Tap(object sender, GestureEventArgs e)
+        {
+        }
+
+        #endregion
     }
 }

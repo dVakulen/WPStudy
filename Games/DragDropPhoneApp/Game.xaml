@@ -15,16 +15,21 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
+       
+
+
+        <Canvas Background="Transparent" x:Name="MainCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="5" >
+        </Canvas>
+        <!--   <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28"/>
+       TitlePanel contains the name of the application and page title-->
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"/>
+
+        <!--ContentPanel - place additional content here
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"/>-->
     </Grid>
 
 </phone:PhoneApplicationPage>
